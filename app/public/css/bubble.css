@@ -1,0 +1,40 @@
+.bubble{
+background-color: rgb(166, 166, 255);
+z-index: 10000;
+position: fixed;
+top: 50PX;
+left: 50%;
+transform: translateX(-50%);
+padding: 0.5rem 0 0;
+border-radius: 10px;    
+overflow: hidden;
+color: white;
+
+}
+
+div.close{
+    text-align: right;
+    color: white;
+    margin-right: 0.5rem;
+}
+
+div.close p{
+    margin: 0;
+    cursor: pointer;
+}
+
+div.text{
+    margin-bottom: 0.5rem;
+}
+
+div.text p{
+    margin: 0 1rem;
+}
+
+div.progressbar{
+    background-color: rgb(82, 82, 252);
+    width: 100%;
+    height: 5px;
+    transition: 5s;
+    transition-timing-function: linear;
+}

@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+body{
+    font-family: 'Roboto';
+    margin: 0;
+    padding: 0;
+    background-color: #F6F6F6;
+}
+
+header {
+    background-color: #d6d6d6;
+}
+
+header section{
+    margin: 0 auto  ;
+    max-width: 1300px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+header div.logo{
+    display: flex;
+    align-items: center;
+    margin: 0.5rem 0 0 1rem;
+    z-index: 100;
+}
+
+header div.logo img{
+    width: 90px;
+    margin-right: 1rem;
+}
+
+header div.logo a{
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+header div.logo P{
+    font-size: 2rem;
+    margin: 0;
+    color: black;
+    height: 100%;
+}
+
+header div.connexion {
+    display: flex;
+}
+
+header div.connexion a{
+    display: block;
+    color: black;
+    text-decoration: none;
+    padding: 1.75rem 1.5rem 1.75rem 1.5rem;
+    border-left: 2px solid #a7a5a5;
+    font-size: 1rem;
+    transition: 0.2s;
+}
+
+header div.connexion a.connected{
+display: flex;
+align-items: center;
+}
+
+header div.connexion span{
+    font-size: 1rem;
+}
+
+
+header a.connected img{
+    width: 80px;
+}
+
+header div.connexion a:hover{
+    background-color: #a7a5a5;  
+    transition: 0.2s;
+    color: white;
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
+}
+
+main{
+    max-width: 1040px;
+    margin: 0 auto;
+}
+
+main section{
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+main h2{
+    margin: inherit auto;
+    font-size: 2rem;
+}
+
+main p{
+    margin: 0 auto;
+    padding-left: 4rem;
+}
+
+main h1{
+    font-size: 5rem;
+    text-align: center;
+}
+
+main .intro img{
+    margin: 0 auto;
+    display: block;
+    width: 500px;
+}
+
+form{
+
+    width: 200px;
+    margin: 2rem auto 0;
+    display: flex;
+    flex-direction: column;
+
+}
+
+form div{
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 2rem;
+}
+
+form div p{
+    margin: 0;
+}
+
+
+form div input{
+    width: 100%;
+    height: 30px;
+    border-radius: 15px;
+    padding: 0 0.5rem;
+    border: 0;
+    background-color: #d6d6d6;
+}
+
+form input#submit{
+    width: 215px;
+
+    
+
+}
+
+form p{
+    text-align: center;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+.passwordDiv{
+    position: relative;
+}
+
+.passwordConditions{
+    display: block;
+    text-align: left;
+    background-color: #d6d6d6;
+    position: absolute;
+    z-index: 110000;
+    right: -23rem;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 1rem;
+    border-radius: 15px;
+}
+
+.passwordConditions::before{
+    content: "";
+    background-color: #d6d6d6;
+    top: 50%;
+    left: -5px;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    /* z-index: 111111; */
+    transform: translateY(-50%) rotate(45deg);
+
+    
+}
+
+span.singleCondition{
+margin-right: 0.5rem;
+font-weight: bolder;
+}
+
+.passwordConditions p{
+    text-align: left;
+}
+
+
+span.crossed{
+    color: red;
+}
+
+span.checked{
+    color: green;
+}
