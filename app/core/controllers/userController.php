@@ -260,7 +260,8 @@ function showLoginForm()
 function login()
 {
     require_once('./app/core/models/userModel.php');
-    $email = $_POST["email"];
+    $email = htmlentities(trim($_POST["email"]));
+    $mdp = htmlentities(trim($_POST["password"]));
     $connexionVerif = connexion($email);
 
     if ($connexionVerif['0'] === 1 && password_verify($mdp, $connexionVerif['1']['password'])) {

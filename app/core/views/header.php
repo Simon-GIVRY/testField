@@ -25,6 +25,16 @@
                     <p>Maxwell</p>
                 </a>
             </div>
+
+           
+                <menu class="navMenu">
+                    <li>
+                        <a href="./index.php?controller=article&action=all">articles</a>
+                    </li>
+                </menu>
+
+          
+
             <div class="connexion">
                 <?php
                 if (isset($_COOKIE["connected"]) && $_COOKIE["connected"] === "1") {

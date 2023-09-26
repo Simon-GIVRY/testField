@@ -5,6 +5,7 @@ body{
     margin: 0;
     padding: 0;
     background-color: #F6F6F6;
+    /* background-color: red; */
 }
 
 header {
@@ -46,11 +47,11 @@ header div.logo P{
     height: 100%;
 }
 
-header div.connexion {
+header div.connexion,  header menu.navMenu {
     display: flex;
 }
 
-header div.connexion a{
+header div.connexion a, header menu.navMenu a{
     display: block;
     color: black;
     text-decoration: none;
@@ -58,6 +59,15 @@ header div.connexion a{
     border-left: 2px solid #a7a5a5;
     font-size: 1rem;
     transition: 0.2s;
+}
+
+
+header menu li{
+    list-style: none;
+}
+
+header menu{
+    margin: 0;
 }
 
 header div.connexion a.connected{
@@ -74,7 +84,7 @@ header a.connected img{
     width: 80px;
 }
 
-header div.connexion a:hover{
+header div.connexion a:hover, header menu.navMenu a:hover{
     background-color: #a7a5a5;  
     transition: 0.2s;
     color: white;
@@ -202,4 +212,41 @@ span.crossed{
 
 span.checked{
     color: green;
+}
+
+section.article{
+    background-color: #d6d6d6;
+    margin-top: 2rem;
+    padding: 0.5rem 2rem 2rem;
+}
+
+
+section.article h1{
+    font-size: 3rem;
+    text-align: left;
+    margin: 0;
+}
+
+section.article div.meta{
+margin: 1rem 0 1rem;
+position: relative;
+border-bottom: #a7a5a5 solid 2px;
+padding-bottom: 1rem;
+}
+
+
+section.article p{
+text-align: left;
+padding: 0;
+}
+
+div.createArticle{
+    width: 100%;
+    margin: 2rem;
+}
+
+div.createArticle a{
+    display: block;
+    text-align: right;
+    margin-right: 4rem;
 }

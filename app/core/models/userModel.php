@@ -1,18 +1,20 @@
-<?php 
+<?php
+
 /**
  * Undocumented function
  *
  * @return void
  */
-function findAll(){
+function findAll()
+{
     require_once('dbConnect.php');
 
-    if($pdoConn){
+    if ($pdoConn) {
         $query = "SELECT * FROM users";
 
         $exec = $pdoConn->query($query);
 
-        if($exec){
+        if ($exec) {
             $results = $exec->fetchAll(PDO::FETCH_ASSOC);
         }
     }
@@ -25,20 +27,19 @@ function findAll(){
  * @param int $id
  * @return void
  */
-function findBy(int $id){
+function findBy(int $id)
+{
     require_once('dbConnect.php');
 
-    if($pdoConn){
+    if ($pdoConn) {
 
         $query = "SELECT * FROM users WHERE id=$id";
 
         $exec = $pdoConn->query($query);
 
-        if($exec){
+        if ($exec) {
             $user = $exec->fetch(PDO::FETCH_ASSOC);
-
-        }
-        else{
+        } else {
             // header('Location: ../error.php')
             echo "Erreur";
         }
@@ -54,20 +55,19 @@ function findBy(int $id){
  * @param integer $userID
  * @return void
  */
-function updateUserById(string $username,string $profilePicture ,int $userID){
+function updateUserById(string $username, string $profilePicture, int $userID)
+{
     require_once('dbConnect.php');
 
-    if($pdoConn){
+    if ($pdoConn) {
         $query = "UPDATE users SET username='$username', profile_picture='$profilePicture' WHERE id='$userID'";
 
         $exec = $pdoConn->query($query);
 
-        if($exec){
+        if ($exec) {
             header('Location: index.php?controller=home&action=Accueil');
-        }
-        else{
+        } else {
             header('Location: index.php?controller=user&action=showUpdateForm');
-
         }
     }
 }
@@ -78,32 +78,33 @@ function updateUserById(string $username,string $profilePicture ,int $userID){
  * @param integer $id
  * @return void
  */
-function deleteBy(int $id){
+function deleteBy(int $id)
+{
     require_once('dbConnect.php');
 
     // Contrôle de l'état de la connexion à la base de données
-    if($pdoConn){
+    if ($pdoConn) {
 
-    
+
         // Stockage de la requête SQL au sein de la variable $query.
         $query = "DELETE FROM users WHERE id=$id";
-        
+
         // Execution de la requête sur la base de données.
         // Stockage du résultat de l'exécution dans la variable $execution.
         $exec = $pdoConn->query($query);
 
-        if($exec){
+        if ($exec) {
             // Si la requête de suppression s'est exécutée sans accrocs :
             // Redirection vers la page sur laquelle figurent l'ensemble des livres
             header('Location: index.php?controller=user&action=all');
         }
         // Si la requête a rencontré une erreur lors de son execution
-        else{
+        else {
             header('Location: ../error.php');
         }
     } // Fin du contrôle de la connexion à PDO
 
-    else{
+    else {
         header('Location: ../error.php');
     }
 }
@@ -114,20 +115,21 @@ function deleteBy(int $id){
  * @param string $email
  * @return void
  */
-function ifAlreadyExists(string $email){
+function ifAlreadyExists(string $email)
+{
     require_once('dbConnect.php');
 
-    if($pdoConn){
+    if ($pdoConn) {
 
-    $check = $pdoConn->prepare('SELECT COUNT(*) FROM users WHERE email = :email');
+        $check = $pdoConn->prepare('SELECT COUNT(*) FROM users WHERE email = :email');
 
-    $check->bindParam(':email', $email, PDO::PARAM_STR);
-    
-    $check->execute();
-    
-    $result = $check->fetch(PDO::FETCH_ASSOC);
+        $check->bindParam(':email', $email, PDO::PARAM_STR);
 
-    return $result;
+        $check->execute();
+
+        $result = $check->fetch(PDO::FETCH_ASSOC);
+
+        return $result;
     }
 }
 
@@ -139,12 +141,13 @@ function ifAlreadyExists(string $email){
  * @param string $password
  * @return void
  */
-function addOne(string $username, string $email, string $password){
+function addOne(string $username, string $email, string $password)
+{
     // Récupération de la connexion à la base de données
     require("dbConnect.php");
 
     // Si la connexion à la base de données est effective
-    if($pdoConn){
+    if ($pdoConn) {
 
         // Stockage de la requête d'ajout au sein de la variable $query.
         $query = "INSERT INTO users (username, email, password) VALUES ('$username', '$email' ,'$password')";
@@ -154,7 +157,7 @@ function addOne(string $username, string $email, string $password){
 
         $exec = $pdoConn->query($query);
 
-        if($exec){
+        if ($exec) {
             // Si la requête s'est exécutée sans accrocs :
             // Redirection vers la page qui affiche l'ensemble des livres
             header("Location: .//index.php?controller=user&action=showLoginForm");
@@ -168,20 +171,20 @@ function addOne(string $username, string $email, string $password){
  * @param string $email
  * @return void
  */
-function connexion(string $email){
+function connexion(string $email)
+{
     require_once("dbConnect.php");
 
-    if($pdoConn){
+    if ($pdoConn) {
         $query = "SELECT * FROM users WHERE email='$email'";
 
         $exec = $pdoConn->query($query);
 
-        if($exec){
+        if ($exec) {
             $user = $exec->fetch(PDO::FETCH_ASSOC);
             return [1, $user];
-            
-        }else{
+        } else {
             var_dump("error model");
-
         }
-}};
+    }
+};
