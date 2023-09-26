@@ -1,4 +1,9 @@
 <?php 
+/**
+ * Undocumented function
+ *
+ * @return void
+ */
 function findAll(){
     require_once('dbConnect.php');
 
@@ -14,8 +19,13 @@ function findAll(){
     return $results;
 }
 
-
-function findBy($id){
+/**
+ * Get all info of a user by searching with it's ID
+ *
+ * @param int $id
+ * @return void
+ */
+function findBy(int $id){
     require_once('dbConnect.php');
 
     if($pdoConn){
@@ -36,7 +46,15 @@ function findBy($id){
     return $user;
 }
 
-function updateUserById( $username, $profilePicture ,$userID){
+/**
+ * Update hte username and profile picture of an user by using the ID
+ *
+ * @param string $username
+ * @param string $profilePicture
+ * @param integer $userID
+ * @return void
+ */
+function updateUserById(string $username,string $profilePicture ,int $userID){
     require_once('dbConnect.php');
 
     if($pdoConn){
@@ -54,7 +72,13 @@ function updateUserById( $username, $profilePicture ,$userID){
     }
 }
 
-function deleteBy($id){
+/**
+ * Delete an user by using it's Id
+ *
+ * @param integer $id
+ * @return void
+ */
+function deleteBy(int $id){
     require_once('dbConnect.php');
 
     // Contrôle de l'état de la connexion à la base de données
@@ -84,8 +108,13 @@ function deleteBy($id){
     }
 }
 
-
-function ifAlreadyExists($email){
+/**
+ * Verify if the inputted email hasn't been used already
+ *
+ * @param string $email
+ * @return void
+ */
+function ifAlreadyExists(string $email){
     require_once('dbConnect.php');
 
     if($pdoConn){
@@ -102,8 +131,15 @@ function ifAlreadyExists($email){
     }
 }
 
-
-function addOne($username, $email, $password){
+/**
+ * Create a new user
+ *
+ * @param string $username
+ * @param string $email
+ * @param string $password
+ * @return void
+ */
+function addOne(string $username, string $email, string $password){
     // Récupération de la connexion à la base de données
     require("dbConnect.php");
 
@@ -126,8 +162,13 @@ function addOne($username, $email, $password){
     }
 }
 
-
-function conn($email, $mdp){
+/**
+ * verify if a user already exists to make a connexion 
+ *
+ * @param string $email
+ * @return void
+ */
+function connexion(string $email){
     require_once("dbConnect.php");
 
     if($pdoConn){
@@ -135,8 +176,6 @@ function conn($email, $mdp){
 
         $exec = $pdoConn->query($query);
 
-
-        
         if($exec){
             $user = $exec->fetch(PDO::FETCH_ASSOC);
             return [1, $user];

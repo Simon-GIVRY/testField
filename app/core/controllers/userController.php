@@ -7,6 +7,12 @@ function all()
     // require_once('./app/core/views/user/all.php');
 }
 
+/**
+ * Controller to verify user's input in the update form
+ * and will call to 'updateUserById' function if input is valid
+ *
+ * @return void
+ */
 function update()
 {
     require_once('./app/core/models/userModel.php');
@@ -87,23 +93,44 @@ function update()
     }
 }
 
+/**
+ * Will require and display the form for changing the username and profile pcture
+ *
+ * @return void
+ */
 function showUpdateForm()
 {
     require_once('./app/core/models/userModel.php');
     require_once('./app/core/views/user/update.php');
 }
 
+/**
+ * Undocumented function
+ *
+ * @return void
+ */
 function delete()
 {
     require_once('./app/core/models/userModel.php');
     deleteBy($_POST["deleteID"]);
 }
 
+/**
+ * Will require and display the form for user registration
+ *
+ * @return void
+ */
 function showRegisterForm()
 {
     require_once('./app/core/views/user/inscription.php');
 }
 
+/**
+ * Controller to verify user's input in the register form
+ * and will call to 'addOne' function if input is valid 
+ *
+ * @return void
+ */
 function register()
 {
 
@@ -212,17 +239,29 @@ function register()
     }
 }
 
+/**
+ * Will require and display the form for user login
+ * 
+ *
+ * @return void
+ */
 function showLoginForm()
 {
     require_once('./app/core/views/user/connexion.php');
 }
 
+/**
+* Controller to verify user's input in the login form
+ * and will call to 'connexion' function if input is valid 
+ * and will create connexion coookies
+ *
+ * @return void
+ */
 function login()
 {
     require_once('./app/core/models/userModel.php');
     $email = $_POST["email"];
-    $mdp = $_POST["password"];
-    $connexionVerif = conn($email, $mdp);
+    $connexionVerif = connexion($email);
 
     if ($connexionVerif['0'] === 1 && password_verify($mdp, $connexionVerif['1']['password'])) {
 
@@ -243,11 +282,11 @@ function login()
     }
 }
 
-function showConnForm()
-{
-    require_once('./app/core/views/user/connexion.php');
-}
-
+/**
+ * Controller to disconnect a user and destroy connexion cookies
+ *
+ * @return void
+ */
 function deconnexion()
 {
     setcookie("connected", "", time() - 2629800);
