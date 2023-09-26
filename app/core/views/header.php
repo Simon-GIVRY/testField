@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <!-- <link rel="stylesheet" href="../../webfiles/css/style.css"> -->
+    <link rel="shortcut icon" href="./app/public/src/maxwell.png" type="image/x-icon">
     <link rel="stylesheet" href="./app/public/css/style.css">
     <link rel="stylesheet" href="./app/public/css/pauseMenu.css">
     <link rel="stylesheet" href="./app/public/css/bubble.css">
