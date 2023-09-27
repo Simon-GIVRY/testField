@@ -17,7 +17,7 @@ function update()
 {
     require_once('./app/core/models/userModel.php');
 
-    var_dump($_COOKIE);
+    // var_dump($_COOKIE);
 
     $errorArray = ["usernameError" => "", "profilePictureError"=>""];
 
@@ -48,7 +48,7 @@ function update()
 
 
     // file control
-    if (!empty($_FILES) && $_FILES['error']>=1) {
+    if (!empty($_FILES) && $_FILES['error'] >=1) {
         $finfo = new finfo(FILEINFO_MIME_TYPE);
         if (false === $ext = array_search(
             $finfo->file($pfp['tmp_name']),
@@ -89,7 +89,8 @@ function update()
     }else{
         session_start();
         $_SESSION["UpdateErrors"]=$errorArray; 
-        header("Location: index.php?controller=user&action=showUpdateForm");
+        var_dump($errorArray);
+        // header("Location: index.php?controller=user&action=showUpdateForm");
     }
 }
 

@@ -62,12 +62,13 @@ function updateUserById(string $username, string $profilePicture, int $userID)
     if ($pdoConn) {
         $query = "UPDATE users SET username='$username', profile_picture='$profilePicture' WHERE id='$userID'";
 
+        
         $exec = $pdoConn->query($query);
 
         if ($exec) {
-            header('Location: index.php?controller=home&action=Accueil');
+            // header('Location: index.php?controller=home&action=Accueil');
         } else {
-            header('Location: index.php?controller=user&action=showUpdateForm');
+            // header('Location: index.php?controller=user&action=showUpdateForm');
         }
     }
 }

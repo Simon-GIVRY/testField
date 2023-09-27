@@ -21,6 +21,8 @@ function showCreateForm(){
 }
 
 function createArticle(){
+    require_once('./app/core/models/articleModel.php');
+
     $title = htmlentities(trim($_POST["title"]));
     $content =nl2br(htmlentities(trim($_POST["content"])));
 
@@ -48,6 +50,6 @@ function createArticle(){
     }
 
     if (!isset($titleError) && !isset($contentError)) {
-        // model
+        create($title, $content, date("Y-m-d H:i:s"), json_decode($_COOKIE["userInfo"], true)["id"]);
     }
 }

@@ -2,8 +2,9 @@
     $userInfo =json_decode($_COOKIE["userInfo"], true);
 
     session_start();
-    var_dump($_SESSION["UpdateErrors"]);
-    $updateErrors = $_SESSION["UpdateErrors"];
+    if (isset( $_SESSION["UpdateErrors"])) {
+        $updateErrors = $_SESSION["UpdateErrors"];
+    }
 ?>
 
 <div>
@@ -26,7 +27,7 @@
 
         <div>
             <label for="profilePicture">Profile Picture</label>
-            <input type="file" name="profilePicture" id="profilePicture" >
+            <input type="file" name="profilePicture" id="profilePicture" accept="image/png, image/gif, image/jpeg">
         </div>
 
         <input type="submit" value="Modifier">
