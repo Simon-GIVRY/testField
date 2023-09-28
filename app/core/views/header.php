@@ -39,7 +39,8 @@
                 <?php
                 if (isset($_COOKIE["connected"]) && $_COOKIE["connected"] === "1") {
                     $userInfo =json_decode($_COOKIE["userInfo"], true);
-                ?>
+                    ?>
+                
                     <a href="./index.php?controller=user&action=showUpdateForm" class="connected">
                         <img src="<?= "./app/public/uploads/profilePictures/".$userInfo["pfp"] ?>" class="userImg" alt="Image d'utilisateur">
                         <span><?= $userInfo["username"] ?></span>
@@ -48,14 +49,13 @@
                 <?php
                 } 
                 else {
-                ?>
+                    ?>
+
                     <a href="./index.php?controller=user&action=showLoginForm">Connexion</a>
                     <a href="./index.php?controller=user&action=showRegisterForm">inscription</a>
 
-                <?php
+                    <?php
                 }
-
-
                 ?>
             </div>
         </section>

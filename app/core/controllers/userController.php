@@ -279,8 +279,9 @@ function login()
 
         header("Location: ./index.php?controller=home&action=Accueil");
     } else {
-        var_dump("error controller");
-        // La connexion a échoué, vous pouvez gérer cela ici (par exemple, afficher un message d'erreur).
+        session_start();
+        $_SESSION["LoginError"] = ["wrongCredentials"=>"L'email ou le mot de passe saisie est invalide."];
+        header("Location: ./index.php?controller=user&action=showLoginForm");
     }
 }
 

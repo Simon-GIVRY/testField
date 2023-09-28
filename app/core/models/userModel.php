@@ -144,26 +144,29 @@ function ifAlreadyExists(string $email)
  */
 function addOne(string $username, string $email, string $password)
 {
-    // Récupération de la connexion à la base de données
+    
     require("dbConnect.php");
 
-    // Si la connexion à la base de données est effective
+
     if ($pdoConn) {
 
-        // Stockage de la requête d'ajout au sein de la variable $query.
-        $query = "INSERT INTO users (username, email, password) VALUES ('$username', '$email' ,'$password')";
+        $query = $pdoConn->prepare("INSERT INTO users (username, email, password) VALUES (:username, :email ,:password)");
 
-        // Execution de la requête sur la base de données.
-        // Stockage du résultat de l'exécution dans la variable $execution.
-
-        $exec = $pdoConn->query($query);
+        $query->bindParam(":username", $username, PDO::PARAM_STR);
+        $query->bindParam(":email", $email, PDO::PARAM_STR);
+        $query->bindParam(":password", $password, PDO::PARAM_STR);
+ 
+        $exec = $query->execute();
 
         if ($exec) {
-            // Si la requête s'est exécutée sans accrocs :
-            // Redirection vers la page qui affiche l'ensemble des livres
+
             header("Location: .//index.php?controller=user&action=showLoginForm");
         }
+        else {
+        header('Location: ./index.php?controller=home&action=error');
+        }
     }
+    header('Location: ./index.php?controller=home&action=error');
 }
 
 /**
@@ -187,5 +190,9 @@ function connexion(string $email)
         } else {
             var_dump("error model");
         }
+    }
+    else {
+        header('Location: ./index.php?controller=home&action=error');
+        
     }
 };
