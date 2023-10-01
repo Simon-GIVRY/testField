@@ -216,7 +216,7 @@ span.checked{
 
 section.article{
     background-color: #d6d6d6;
-    margin-top: 2rem;
+    margin-top: 1rem;
     padding: 0.5rem 2rem 2rem;
 }
 
@@ -249,4 +249,27 @@ div.createArticle a{
     display: block;
     text-align: right;
     margin-right: 4rem;
+}
+
+div.panel{
+    margin: 3rem auto 0;
+    display: flex;
+    max-width: 800px;
+    /* background-color: red; */
+    justify-content: space-between;
+    padding: 0.5rem 2rem;
+}
+
+div.action{
+    display: flex;
+}
+
+div.action form input{
+    max-width: fit-content;
+}
+
+div.action form{
+    margin: 0 0 0 1rem;
+    width: fit-content;
+
 }

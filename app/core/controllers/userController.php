@@ -17,10 +17,7 @@ function update()
 {
     require_once('./app/core/models/userModel.php');
 
-    // var_dump($_COOKIE);
-
     $errorArray = ["usernameError" => "", "profilePictureError"=>""];
-
 
     $username = htmlentities(trim($_POST["username"]));
     $pfp = $_FILES["profilePicture"];
@@ -267,12 +264,13 @@ function login()
 
     if ($connexionVerif['0'] === 1 && password_verify($mdp, $connexionVerif['1']['password'])) {
 
-        $userId = $connexionVerif[1]['ID'];
+        $userId = $connexionVerif[1]['id'];
         $username = $connexionVerif[1]['username'];
         $userEmail = $connexionVerif[1]['email'];
         $userPfp = $connexionVerif[1]['profile_picture'];
 
         $userInfo = ["id" => "$userId", "username" => "$username", "email" => "$userEmail", "pfp" => "$userPfp"];
+
 
         setcookie("connected", true, time() + 2629800);
         setcookie("userInfo", json_encode($userInfo), time() + 2629800);
