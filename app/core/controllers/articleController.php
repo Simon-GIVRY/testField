@@ -21,15 +21,22 @@ function all()
 function single()
 {
     require_once('./app/core/models/articleModel.php');
+    require_once('commentaireController.php');
+
+    $comments = allCommentForArticle();
+
     $results = findBy($_GET["n"]);
     $userId = json_decode($_COOKIE["userInfo"], true)["id"];
+    $articleId = $results['id'];
+    $articleTitle = $results['Titre'];
+    $articleContent = $results['Contenue'];
+    $articleDate = $results['created_at'];
 
     require_once('./app/core/views/article/single.php');
 }
 
 function showCreateForm(){
     require_once('./app/core/views/article/createForm.php');
-
 }
 
 function createArticle(){
@@ -39,7 +46,6 @@ function createArticle(){
     $content =nl2br(htmlentities(trim($_POST["content"])));
 
     $errorArray = ["title"=>"","content"=>""];
-
 
     if (empty($title)) {
         $titleError = "Le champ doit etre remplie";
@@ -103,11 +109,9 @@ function update(){
         $errorArray["content"] = $contentError;
     }
 
-
     if (!isset($titleError) && !isset($contentError)) {
         updateById($title, $content, $id);
     }
-
 }
 
 function delete(){
@@ -122,7 +126,3 @@ function delete(){
         header('Location: index.php?controller=article&action=all');
     }
 }
-
-
-
-

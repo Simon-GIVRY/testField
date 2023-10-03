@@ -34,16 +34,16 @@ function pageNumbers()
         if ($exec) {
             $results = $exec->fetch(PDO::FETCH_ASSOC);
         }
-        // var_dump($results["COUNT(*)"]/5);
     }
     return $results;
 
 }
 
 function findBy(int $id){
-    require_once('dbConnect.php');
+    
+        require('dbConnect.php');
    
-    if($pdoConn){
+    if(isset($pdoConn)){
         $query = "SELECT article.id, article.Titre, article.Contenue, article.created_at, article.id_user ,users.username FROM article INNER JOIN users ON article.id_user = users.ID WHERE article.id = $id";
 
         $execution = $pdoConn->query($query);
@@ -65,7 +65,6 @@ function create($title, $content, $created_at, $idUser){
     if ($pdoConn) {
         $query = "INSERT INTO article (Titre, Contenue, created_at, id_user) VALUES ('$title', '$content', '$created_at', '$idUser')";
         
-        var_dump($query);
         $execution = $pdoConn->query($query);
         
         if($execution){
