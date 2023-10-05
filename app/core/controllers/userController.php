@@ -39,55 +39,70 @@ function update()
     }
 
     if ($pfp['size'] > 1000000) {
-        var_dump("Erreur, le fichier est trop volumineux");
+        $errorPfp = "Erreur, le fichier est trop volumineux";
     }
-    var_dump($_FILES);
 
-
-    // file control
-    if (!empty($_FILES) && $_FILES['error'] >=1) {
-        $finfo = new finfo(FILEINFO_MIME_TYPE);
-        if (false === $ext = array_search(
-            $finfo->file($pfp['tmp_name']),
-            array(
-                'jpg' => 'image/jpeg',
-                'png' => 'image/png',
-                'gif' => 'image/gif',
-            ),
-            true
-        )) {
-            $errorPfp = "mauvais format d'image.";
-        }
-
-        $newFileName = sha1_file($pfp['tmp_name']);
+        if (!empty($_FILES) && $_FILES['profilePicture']["error"] != 4) {
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            if (false === $ext = array_search(
+                $finfo->file($pfp['tmp_name']),
+                array(
+                    'jpg' => 'image/jpeg',
+                    'png' => 'image/png',
+                    'gif' => 'image/gif',
+                ),
+                true
+            )) {
+                $errorPfp = "mauvais format d'image.";
+            }
     
-        if (!move_uploaded_file(
-            $pfp['tmp_name'],
-            sprintf('./app/public/uploads/profilePictures/%s.%s',
-                $newFileName,
-                $ext
-            )
-        )) {
-            $errorPfp = "erreur! Une erreur est survenue lors de l'envoie du fichier";
+            $newFileName = sha1_file($pfp['tmp_name']);
+        
+    
+            if (!move_uploaded_file(
+                $pfp['tmp_name'],
+                sprintf('./app/public/uploads/profilePictures/%s.%s',
+                    $newFileName,
+                    $ext
+            ))) {
+                $errorPfp = "erreur! Une erreur est survenue lors de l'envoie du fichier";
+            }
+            else{
+                $filename = $newFileName.".".$ext;
+            }
         }
-    }
-    else {
-        $errorPfp = "Aucun fichier n'a été envoyer.";
+        else{
+            $filename = json_decode($_COOKIE['userInfo'], true)["pfp"];
+        }
+
+    if (isset($errorPfp)) {
+        $errorArray["profilePictureError"] = $errorPfp;
         
     }
 
-    if (isset($errorPfp)) {
-        $errorArray["profilePictureError"] = $errUserName;
-    }
-
     if (!isset($errUserName) && !isset($errorPfp)) {
-        updateUserById(htmlentities($username), $newFileName.".".$ext,htmlentities($_POST['id']));
+
+
+        $queryResult = updateUserById(intval($_POST['id']), htmlentities($username), $filename);
+
+        if ($queryResult) {
+            $userInfo = json_decode($_COOKIE['userInfo'], true);
+            $userInfo['username'] = $username;
+            $userInfo["pfp"] = $filename;
+
+            setcookie("connected", true, time() + 2629800);
+            setcookie("userInfo", json_encode($userInfo), time() + 2629800);
+
+            header('Location: index.php?controller=article&action=all');   
+        }
+        else {
+            header('Location: index.php?controller=home&action=error');   
+        }
 
     }else{
         session_start();
         $_SESSION["UpdateErrors"]=$errorArray; 
-        var_dump($errorArray);
-        // header("Location: index.php?controller=user&action=showUpdateForm");
+        header("Location: index.php?controller=user&action=showUpdateForm");
     }
 }
 
@@ -103,14 +118,22 @@ function showUpdateForm()
 }
 
 /**
- * Undocumented function
+ * Function do delete user
  *
  * @return void
  */
 function delete()
 {
     require_once('./app/core/models/userModel.php');
-    deleteBy($_POST["deleteID"]);
+    $result = deleteBy($_POST["deleteID"]);
+
+    if ($result) {
+        deconnexion();
+        header('Location: index.php?controller=article&action=all');   
+    }
+    else{
+        header('Location: index.php?controller=home&action=error');
+    }
 }
 
 /**
@@ -131,7 +154,6 @@ function showRegisterForm()
  */
 function register()
 {
-
     require_once('./app/core/models/userModel.php');
 
 
@@ -228,7 +250,14 @@ function register()
     }
 
     if (!isset($errUserName) && !isset($errMail) && !isset($errPassword) && !isset($errConfirmPassword)) {
-        addOne($username, $email, $hashedPassword);
+        $result = addOne($username, $email, $hashedPassword);
+
+        if ($result) {
+            header("Location: .//index.php?controller=user&action=showLoginForm");
+        }
+        else {
+            header('Location: ./index.php?controller=home&action=error');
+        }
     } else {
         session_start();
         $_SESSION["registerError"] = $errorArray;
@@ -261,13 +290,13 @@ function login()
     $email = htmlentities(trim($_POST["email"]));
     $mdp = htmlentities(trim($_POST["password"]));
     $connexionVerif = connexion($email);
+    
+    if ($connexionVerif != false && password_verify($mdp, $connexionVerif['password'])) {
 
-    if ($connexionVerif['0'] === 1 && password_verify($mdp, $connexionVerif['1']['password'])) {
-
-        $userId = $connexionVerif[1]['id'];
-        $username = $connexionVerif[1]['username'];
-        $userEmail = $connexionVerif[1]['email'];
-        $userPfp = $connexionVerif[1]['profile_picture'];
+        $userId = $connexionVerif['id'];
+        $username = $connexionVerif['username'];
+        $userEmail = $connexionVerif['email'];
+        $userPfp = $connexionVerif['profile_picture'];
 
         $userInfo = ["id" => "$userId", "username" => "$username", "email" => "$userEmail", "pfp" => "$userPfp"];
 
@@ -275,10 +304,11 @@ function login()
         setcookie("connected", true, time() + 2629800);
         setcookie("userInfo", json_encode($userInfo), time() + 2629800);
 
-        header("Location: ./index.php?controller=home&action=Accueil");
+        header("Location: ./index.php?controller=article&action=all");
     } else {
         session_start();
         $_SESSION["LoginError"] = ["wrongCredentials"=>"L'email ou le mot de passe saisie est invalide."];
+
         header("Location: ./index.php?controller=user&action=showLoginForm");
     }
 }
@@ -293,5 +323,5 @@ function deconnexion()
     setcookie("connected", "", time() - 2629800);
     setcookie("userInfo", "", time() - 2629800);
 
-    header("Location: ./index.php?controller=home&action=Accueil");
+    header("Location: ./index.php?controller=article&action=all");
 }

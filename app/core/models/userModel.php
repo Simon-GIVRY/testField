@@ -17,6 +17,9 @@ function findAll()
         if ($exec) {
             $results = $exec->fetchAll(PDO::FETCH_ASSOC);
         }
+        else {
+            $results = false;
+        }
     }
     return $results;
 }
@@ -32,19 +35,20 @@ function findBy(int $id)
     require_once('dbConnect.php');
 
     if ($pdoConn) {
+        $find = $pdoConn->prepare("SELECT * FROM users WHERE id=:id");
 
-        $query = "SELECT * FROM users WHERE id=$id";
+        $find->bindParam(':id',$id, PDO::PARAM_INT).
 
         $exec = $pdoConn->query($query);
 
         if ($exec) {
-            $user = $exec->fetch(PDO::FETCH_ASSOC);
+            $result = $exec->fetch(PDO::FETCH_ASSOC);
         } else {
             // header('Location: ../error.php')
-            echo "Erreur";
+           $result = false; 
         }
     }
-    return $user;
+    return $result;
 }
 
 /**
@@ -55,21 +59,26 @@ function findBy(int $id)
  * @param integer $userID
  * @return void
  */
-function updateUserById(string $username, string $profilePicture, int $userID)
+function updateUserById(int $userID, string $username, string $profilePicture)
 {
     require_once('dbConnect.php');
 
     if ($pdoConn) {
-        $query = "UPDATE users SET username='$username', profile_picture='$profilePicture' WHERE id='$userID'";
 
-        
-        $exec = $pdoConn->query($query);
+        $update = $pdoConn->prepare("UPDATE users SET username=:username, profile_picture=:profilePicture WHERE id=:userID");
+
+        $update->bindParam(':username', $username, PDO::PARAM_STR);
+        $update->bindParam(':profilePicture',$profilePicture, PDO::PARAM_STR);
+        $update->bindParam(':userID',$userID, PDO::PARAM_INT);
+
+        $exec = $update->execute();
 
         if ($exec) {
-            // header('Location: index.php?controller=home&action=Accueil');
+           $result = true;
         } else {
-            // header('Location: index.php?controller=user&action=showUpdateForm');
+           $result = false;
         }
+        return $result;
     }
 }
 
@@ -86,24 +95,20 @@ function deleteBy(int $id)
     // Contrôle de l'état de la connexion à la base de données
     if ($pdoConn) {
 
+        $create = $pdoConn->prepare('DELETE FROM users WHERE id=:id');
 
-        // Stockage de la requête SQL au sein de la variable $query.
-        $query = "DELETE FROM users WHERE id=$id";
+        $create->bindParam(':id', $id, PDO::PARAM_INT);
 
-        // Execution de la requête sur la base de données.
-        // Stockage du résultat de l'exécution dans la variable $execution.
-        $exec = $pdoConn->query($query);
-
+        $exec = $create->execute();
+        
         if ($exec) {
-            // Si la requête de suppression s'est exécutée sans accrocs :
-            // Redirection vers la page sur laquelle figurent l'ensemble des livres
-            header('Location: index.php?controller=user&action=all');
+            $result = true;
+        } else {
+            $result = false;
         }
-        // Si la requête a rencontré une erreur lors de son execution
-        else {
-            header('Location: ../error.php');
-        }
-    } // Fin du contrôle de la connexion à PDO
+
+        return $result;
+    } 
 
     else {
         header('Location: ../error.php');
@@ -159,37 +164,43 @@ function addOne(string $username, string $email, string $password)
         $exec = $query->execute();
 
         if ($exec) {
-
-            header("Location: .//index.php?controller=user&action=showLoginForm");
+            $result = true;
         }
         else {
-        header('Location: ./index.php?controller=home&action=error');
+            $result = false;
         }
+
+        return $result;
     }
     header('Location: ./index.php?controller=home&action=error');
 }
 
 /**
- * verify if a user already exists to make a connexion 
+ * Checks if email match in database
  *
  * @param string $email
- * @return void
+ * @return PDOStatement|false
  */
 function connexion(string $email)
 {
     require_once("dbConnect.php");
 
     if ($pdoConn) {
-        $query = "SELECT * FROM users WHERE email='$email'";
 
-        $exec = $pdoConn->query($query);
+        $verify = $pdoConn->prepare("SELECT * FROM users WHERE email=:email");
+
+        $verify->bindParam(':email', $email, PDO::PARAM_STR);
+
+        $exec = $verify->execute();
+
 
         if ($exec) {
-            $user = $exec->fetch(PDO::FETCH_ASSOC);
-            return [1, $user];
+            $result = $verify->fetch(PDO::FETCH_ASSOC);
+
         } else {
-            var_dump("error model");
+            $result = false;
         }
+        return $result;
     }
     else {
         header('Location: ./index.php?controller=home&action=error');

@@ -20,18 +20,18 @@
     <header>
         <section class="header">
             <div class="logo">
-                <a href="./index.php?controller=home&action=Accueil">
+                <a href="./index.php?controller=article&action=all">
                     <img src="./app/public/src/maxwell.png" alt="Image de Maxwell">
                     <p>Maxwell</p>
                 </a>
             </div>
 
            
-                <menu class="navMenu">
+                <!-- <menu class="navMenu">
                     <li>
                         <a href="./index.php?controller=article&action=all">articles</a>
                     </li>
-                </menu>
+                </menu> -->
 
           
 

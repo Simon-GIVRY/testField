@@ -2,8 +2,6 @@
 
 <?php
 
-var_dump($articleInfo);
-
 ?>
 <div class="panel">
     <a href="index.php?controller=article&action=single&n=<?= $_POST['id']?>"><- Retour aux articles</a>
@@ -30,6 +28,5 @@ var_dump($articleInfo);
 
         <input type="submit" value="Modifier">
 
-        <a href="">Modifier mot de passe</a>
     </form>
 </div>

@@ -1,7 +1,7 @@
 <?php 
 
-    $ctrlName = 'home';
-    $fonction = 'accueil';
+    $ctrlName = 'article';
+    $fonction = 'all';
 
     if(isset($_GET["controller"])){
         $ctrlName = $_GET["controller"];

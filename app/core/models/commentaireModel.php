@@ -1,5 +1,4 @@
 <?php
-
 function getAllByIdArticle($idArticle)
 {
     require_once('dbConnect.php');
@@ -10,14 +9,15 @@ function getAllByIdArticle($idArticle)
 
         $execution = $pdoConn->query($query);
 
-        $results = $execution->fetchAll(PDO::FETCH_ASSOC);
+        $article = $execution->fetchAll(PDO::FETCH_ASSOC);
         
         if($execution){
-            return $results;
+        $result = $article;
         }
         else{
-            var_dump("error model omment");
+            $result = false;
         }
+        return $result;
 
     }
 }

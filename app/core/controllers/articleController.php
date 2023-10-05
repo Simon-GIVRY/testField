@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Gets all article
+ *
+ * @return void
+ */
 function all()
 {
     require_once('./app/core/models/articleModel.php');
@@ -18,6 +23,11 @@ function all()
     require_once('./app/core/views/article/all.php');
 }
 
+/**
+ * gets a single article
+ *
+ * @return void
+ */
 function single()
 {
     require_once('./app/core/models/articleModel.php');
@@ -35,10 +45,20 @@ function single()
     require_once('./app/core/views/article/single.php');
 }
 
+/**
+ * requires article create form
+ *
+ * @return void
+ */
 function showCreateForm(){
     require_once('./app/core/views/article/createForm.php');
 }
 
+/**
+ * Creates a new article
+ *
+ * @return void
+ */
 function createArticle(){
     require_once('./app/core/models/articleModel.php');
 
@@ -66,13 +86,26 @@ function createArticle(){
     if (isset($contentError)) {
         $errorArray["content"] = $contentError;
     }
-    $user = json_decode($_COOKIE["userInfo"], true);
 
     if (!isset($titleError) && !isset($contentError)) {
-        create($title, $content, date("Y-m-d H:i:s"), json_decode($_COOKIE["userInfo"], true)["id"]);
+        $resultQuery = create($title, $content, date("Y-m-d H:i:s"), json_decode($_COOKIE["userInfo"], true)["id"]);
+
+        if ($resultQuery) {
+            header('Location: ./index.php?controller=article&action=all');
+            
+        }
+        else{
+            header('Location: ./index.php?controller=article&action=showCreateForm');
+
+        }
     }
 }
 
+/**
+ * requires update form for articles
+ *
+ * @return void
+ */
 function showUpdateForm(){
     require_once('./app/core/models/articleModel.php');
     $articleInfo = findBy($_POST['id']);
@@ -80,6 +113,11 @@ function showUpdateForm(){
     require_once('./app/core/views/article/updateForm.php');
 }
 
+/**
+ * Updates an article
+ *
+ * @return void
+ */
 function update(){
     require_once('./app/core/models/articleModel.php');
 
@@ -110,17 +148,35 @@ function update(){
     }
 
     if (!isset($titleError) && !isset($contentError)) {
-        updateById($title, $content, $id);
+        $resultQuery = updateById($title, $content, $id);
+
+        if ($resultQuery) {
+            header('Location: index.php?controller=article&action=single&n='.$id);
+        }
+        else {
+            header('Location: index.php?controller=user&action=showUpdateForm');
+        }
     }
 }
 
+/**
+ * Deletes an article
+ *
+ * @return void
+ */
 function delete(){
     require_once('./app/core/models/articleModel.php');
 
     $articleId = intval($_POST['id']);
 
     if (is_int($articleId)) {
-        deleteById($articleId);
+        $resultQuery = deleteById($articleId);
+        if ($resultQuery) {
+            header('Location: index.php?controller=article&action=all');
+        }
+        else{
+            header('Location: index.php?controller=user&action=showUpdateForm');
+        }
     }
     else {
         header('Location: index.php?controller=article&action=all');
